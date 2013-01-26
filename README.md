@@ -28,9 +28,12 @@ take some time but as you are reading the README of a IRC gem, you
 probably already knew this.
 
 TLDR:
+
 Support?
-irc.jdqirc.net #fantasy
-irc://irc.jdqirc.net/fantasy
+
+    irc.jdqirc.net #fantasy
+
+    irc://irc.jdqirc.net/fantasy
 
 ## Contributing
 
