@@ -1,0 +1,5 @@
+require "fantasy-irc/irc"
+require "fantasy-irc/events"
+require "fantasy-irc/plugins"
+require "fantasy-irc/rooms"
+require "fantasy-irc/users"
