@@ -20,6 +20,18 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
+## Getting support
+
+There is a support channel on irc.jdqirc.net in #fantasy where you
+can get live help on the gem. Getting answers in a IRC channel can
+take some time but as you are reading the README of a IRC gem, you
+probably already knew this.
+
+TLDR:
+Support?
+irc.jdqirc.net #fantasy
+irc://irc.jdqirc.net/fantasy
+
 ## Contributing
 
 1. Fork it
