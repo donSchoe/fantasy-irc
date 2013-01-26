@@ -1,6 +1,6 @@
 # fantasy-irc
 
-A modular, event-driven IRC client gem for Ruby with plugin support
+A modular, event-driven IRC client/bot Ruby gem with plugin support
 
 ## Installation
 
@@ -32,7 +32,6 @@ TLDR:
 Support?
 
     irc.jdqirc.net #fantasy
-
     irc://irc.jdqirc.net/fantasy
 
 ## Contributing

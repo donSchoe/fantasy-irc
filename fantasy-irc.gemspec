@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.authors           = ["Jens Becker"]
   s.email             = ["v2px@v2px.de"]
-  s.description       = "A modular, event-driven IRC client/bot gem for Ruby with plugin support"
-  s.summary           = "A modular, event-driven IRC client/bot gem for Ruby with plugin support"
+  s.description       = "A modular, event-driven IRC client/bot Ruby gem with plugin support"
+  s.summary           = "A modular, event-driven IRC client/bot Ruby gem with plugin support"
   s.homepage          = "http://v2px.github.com/fantasy-irc"
 
   s.files             = `git ls-files`.split("\n")
