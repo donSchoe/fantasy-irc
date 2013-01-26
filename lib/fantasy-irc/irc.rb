@@ -39,7 +39,7 @@ module Fantasy
                 data[:username] = data[:nickname]
             end
             if not data[:realname] then
-                data[:realname] = "https://bitbucket.org/v2px/fantasy-irc"
+                data[:realname] = "https://rubygems.org/gems/fantasy-irc"
             end
 
             if not data[:nickname] then
