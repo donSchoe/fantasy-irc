@@ -48,6 +48,12 @@ module Fantasy
                 @rooms = Array::Unique.new
             end
 
+            # resets user information
+            def reset
+                puts "Resetting user #{self.object_id} with name #{@name}"
+                @rooms = Array::Unique.new
+            end
+
             def say message
                 @connection.send('PRIVMSG '+@name+' :'+message)
                 return self

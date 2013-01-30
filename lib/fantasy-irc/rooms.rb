@@ -29,6 +29,10 @@ module Fantasy
 
                 @data[:rooms][name]
             end
+
+            def all
+                @data[:rooms]
+            end
         end
 
         class Room

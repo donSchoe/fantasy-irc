@@ -21,7 +21,7 @@ module Fantasy
             @users = User::Factory.new self
             @plugins = Plugins.new
 
-            %w{tick loggedin connected user_joined user_parted channel_message}.each do |e|
+            %w{tick loggedin connected user_joined user_parted user_quit channel_message}.each do |e|
                 @events.create(e)
             end
         end
@@ -118,8 +118,6 @@ module Fantasy
                     self.events.by_name('user_joined').call([room, user])
 
                 elsif (tok[1] == "PRIVMSG") then
-                    #                        tok = s.split(' ', 4)
-
                     # channel or private message
                     if (tok[2][0,1] == "#") then
                         # channel message
@@ -154,6 +152,19 @@ module Fantasy
 
                     # TODO part text?
                     self.events.by_name('user_parted').call([room, user])
+
+                elsif (tok[1] == "QUIT") then
+                    # user quit
+                    user = self.users.create(tok[0][1,tok[0].length])
+
+                    puts "!!! user #{user} quit."
+                    # remove user from all rooms
+                    self.rooms.all.values.each do |room|
+                        room.users.delete user
+                    end
+                    user.reset
+
+                    self.events.by_name('user_quit').call([user])
 
                 else
 
