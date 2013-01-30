@@ -1,5 +1,3 @@
-#require "fantasy-irc/connection"
-
 module Fantasy
     module Room
         class Factory

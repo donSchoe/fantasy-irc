@@ -2,11 +2,6 @@ require 'socket' # TCPSocket
 require 'openssl'
 require 'array-unique'
 
-#require "fantasy-irc/rooms"
-#require "fantasy-irc/users"
-#require "fantasy-irc/events"
-#require "fantasy-irc/plugins"
-
 module Fantasy
     class IRC
         attr_reader :events, :rooms, :users, :plugins
