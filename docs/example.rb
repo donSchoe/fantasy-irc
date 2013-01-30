@@ -9,15 +9,13 @@ bot.plugins.load 'corecommands'
 
 # log in once we are connected
 connected = Proc.new do
-	bot.login :nickname => "example", :username => "example", :realname => "GECOS field"
+	bot.login nickname: "example", username: "example", realname: "GECOS field"
 end
 bot.events.by_name('connected').register &connected
 
 # join a room and say hi
 loggedin = Proc.new do
-	%w{#lobby}.each do |r|
-		room = bot.rooms.new(r).join.say "ohai"
-	end
+    bot.rooms.new("#test").join.say "ohai"
 end
 bot.events.by_name('loggedin').register &loggedin
 
@@ -33,5 +31,5 @@ channel_message = Proc.new do |room, user, text|
 end
 bot.events.by_name('channel_message').register &channel_message
 
-bot.connect :server => "irc.example.com", :ssl => true, :port => 6697
+bot.connect server: "irc.example.com", ssl: true, port: 6697
 bot.run
