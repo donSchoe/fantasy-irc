@@ -21,7 +21,7 @@ module Fantasy
             @users = User::Factory.new self
             @plugins = Plugins.new
 
-            %w{tick loggedin connected user_joined channel_message}.each do |e|
+            %w{tick loggedin connected user_joined user_parted channel_message}.each do |e|
                 @events.create(e)
             end
         end
@@ -141,7 +141,22 @@ module Fantasy
                         end
                     end
 
+                elsif (tok[1] == "PART") then
+                    # user parted
+                    room = self.rooms.by_name(tok[2])
+                    user = self.users.create(tok[0][1,tok[0].length])
+
+                    # remove user from room and room from user
+                    room.users.delete user
+                    user.rooms.delete room
+
+                    return if user.ignored?
+
+                    # TODO part text?
+                    self.events.by_name('user_parted').call([room, user])
+
                 else
+
                     # puts "[!] UNKNOWN PROTOCOL PART: #{s}"
                 end
             else

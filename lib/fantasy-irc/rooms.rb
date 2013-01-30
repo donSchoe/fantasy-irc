@@ -24,6 +24,7 @@ module Fantasy
 
                 if not @data[:rooms][name] then
                     raise "Tried to access unknown room \"#{name}\" in Room::Factory \"#{self}\""
+                    #TODO: log
                 end
 
                 @data[:rooms][name]
