@@ -79,6 +79,8 @@ module Fantasy
 
             @connected = Time.now.to_i
             self.events.by_name('connected').call
+
+            return @data[:socket]
         end
 
         def cleanup
