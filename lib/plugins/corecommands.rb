@@ -14,7 +14,7 @@ plugin.handle(/^ping$/i) do |data, args|
     end
 
     Thread.new do
-        ping = `/bin/ping -w 3 -c 1 -- #{args[0]} 2>&1`
+        ping = `/usr/bin/env ping -w 3 -c 1 -- #{args[0]} 2>&1`
 
         if ping.match /unknown host (.+)/ then
             data[:room].say "unknown host #{$1}"
@@ -40,7 +40,7 @@ plugin.handle(/^host$/i) do |data, args|
     end
 
     Thread.new do
-        host = `/usr/bin/host #{args[0]} 2>&1`
+        host = `/usr/bin/env host #{args[0]} 2>&1`
         lines = host.split(/\n/)
         lines.take(3).each do |line|
             data[:room].say line
