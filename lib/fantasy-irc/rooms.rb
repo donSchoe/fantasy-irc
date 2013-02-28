@@ -65,6 +65,7 @@ module Fantasy
                 !!@joined
             end
 
+            # sends a privmsg to the room
             def say message
                 if @joined == false then
                     raise "Tried to talk to a room (#{name}) we're not in."
@@ -72,6 +73,11 @@ module Fantasy
 
                 @connection.send('PRIVMSG '+@name+' :'+message)
                 return self
+            end
+
+            # sends a privmsg with ACTION to the room
+            def me message
+                self.say "\001ACTION #{message}\001"
             end
 
             def to_s
