@@ -16,8 +16,10 @@ module Fantasy
         end
 
         def command command, data, args
-            if not args.nil? then
+            if not args.nil?
                 args = args.split(' ')
+            else
+                args = []
             end
             @plugins.values.each do |plugin|
                 puts "#{plugin}"
