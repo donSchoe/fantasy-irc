@@ -5,7 +5,7 @@ require 'fantasy-irc'
 bot = Fantasy::IRC.new
 
 # load some plugins
-bot.plugins.load 'corecommands'
+bot.plugins.load 'nettools'
 
 # log in once we are connected
 connected = Proc.new do
