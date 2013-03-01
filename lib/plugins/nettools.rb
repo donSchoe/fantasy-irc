@@ -1,8 +1,4 @@
-plugin = Plugin.new "corecommands"
-
-plugin.handle(/^date$/i) do |data|
-    next data[:room].say Time.now.localtime.strftime "%a, %d %b %Y %T %z"
-end
+plugin = Plugin.new "nettools"
 
 plugin.handle(/^ping$/i) do |data, args|
     if args.empty? then
