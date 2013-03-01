@@ -54,6 +54,9 @@ module Fantasy
             if not @connected then
                 raise "not connected to a server!"
             end
+
+            # remove everything after a newline
+            s.gsub!(/\n.*$/, "")
             puts "<-- #{s}"
             @data[:socket].puts "#{s}\n"
         end
