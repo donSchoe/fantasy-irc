@@ -57,9 +57,10 @@ class Plugin
             if command.match(pattern) then
                 puts "#{block} handles #{command}"
                 begin
-                    Kernel.eval(block.call data, args)
+                    block.call data, args
                 rescue Exception => e
                     puts "#{block} failed with Exception #{e}"
+                    puts e.backtrace
                 end
 
                 break
