@@ -56,7 +56,13 @@ class Plugin
         @handlers.each do |pattern, block|
             if command.match(pattern) then
                 puts "#{block} handles #{command}"
-                break block.call data, args
+                begin
+                    Kernel.eval(block.call data, args)
+                rescue Exception => e
+                    puts "#{block} failed with Exception #{e}"
+                end
+
+                break
             end
         end
     end
