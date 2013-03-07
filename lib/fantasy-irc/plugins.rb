@@ -12,8 +12,21 @@ module Fantasy
         end
 
         def load name
+            local  = File.join(File.dirname($0), "plugins")
+            vendor = File.join(File.dirname(__FILE__), "..", "plugins")
             [*name].each do |n|
-                Kernel::load "plugins/#{n}.rb"
+                file = "#{n}.rb"
+                local_file  = File.join(local, file)
+                vendor_file = File.join(vendor, file)
+                if File.exists?(local_file)
+                    puts "[plugin] Loading #{file} (local)."
+                    Kernel.load local_file
+                elsif File::exists?(vendor_file)
+                    puts "[plugin] Loading #{file} (vendor)."
+                    Kernel.load vendor_file
+                else
+                    puts "[plugin] #{file} could not be found."
+                end
             end
         end
 
