@@ -5,8 +5,6 @@ require 'timeout'
 class HackerSays < Plugin
     def initialize name
         super
-        @agent = Mechanize.new
-
         self.handle(/^hackersays$/i) do |data|
             begin
                 Timeout::timeout(2) {
