@@ -111,7 +111,8 @@ module Fantasy
 
                 elsif (tok[1] == "JOIN") then
                     # user joined
-                    room = self.rooms.by_name(tok[2][1,tok[2].length])
+                    room_name = tok[2].gsub(/^:/, '') # remove leadig : (on some networks, but not all!)
+                    room = self.rooms.by_name(room_name)
                     user = self.users.create(tok[0][1,tok[0].length])
 
                     # add user to room and room to user
