@@ -12,7 +12,9 @@ module Fantasy
         end
 
         def load name
-            Kernel::load "plugins/#{name}.rb"
+            [*name].each do |n|
+                Kernel::load "plugins/#{n}.rb"
+            end
         end
 
         def command command, data, args
