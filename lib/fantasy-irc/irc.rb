@@ -164,8 +164,8 @@ module Fantasy
 
                     puts "!!! user #{user} quit."
                     # remove user from all rooms
-                    self.rooms.all.values.each do |room|
-                        room.users.delete user
+                    self.rooms.all.values.each do |r|
+                        r.users.delete user
                     end
                     user.reset
 
@@ -189,7 +189,6 @@ module Fantasy
             @running = Time.now.to_i
             last_tick = @running
             last_ping = @running
-            last_session_ping = @running
 
             loop do
                 time_now = Time.now

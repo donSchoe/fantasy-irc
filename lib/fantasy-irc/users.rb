@@ -46,6 +46,7 @@ module Fantasy
                 puts "New User #{self.object_id} with name #{@name}"
                 @connection = connection
                 @rooms = Array::Unique.new
+                @ignored = false
             end
 
             # resets user information
