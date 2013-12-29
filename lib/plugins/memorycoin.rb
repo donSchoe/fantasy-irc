@@ -18,7 +18,7 @@ plugin = Plugin.new "memorycoin"
 def mmc_blockinfo
 
   # number of latest block
-	@blckhigh = `#{@mmc_path} getblockcount`
+  @blckhigh = `#{@mmc_path} getblockcount`
 
   # hash of latest block
   blckhash = `#{@mmc_path} getblockhash #{@blckhigh}`
