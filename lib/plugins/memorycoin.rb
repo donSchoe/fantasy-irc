@@ -9,7 +9,7 @@ require 'json'
 plugin = Plugin.new "memorycoin"
 
 # only talk in these rooms
-@mmc_rooms = ['#memorycoin', '##mmc-spam']
+@mmc_rooms = ['#memorycoin', '#extasie', '##mmc-spam']
 
 ##### POINT THIS TO YOUR MEMORYCOIN DAEMON #####
 @mmc_path = '/path/to/memorycoind'
@@ -63,6 +63,29 @@ def mmc_blockinfo
   @minted += (@blckhigh.to_f - (currweek * 1680.0)) * @reward
 
 end # end mmc_blockinfo
+
+# gets memorycoin voting info
+def mmc_voteinfo
+
+  # gets memorycoin blockchain info
+  mmc_blockinfo
+
+  # gets the last vote block number
+  tlock = @blckhigh.to_f / 20.0
+  block = @blckhigh.to_i - ((tlock - tlock.round) * 20.0).round
+  if (block > @blckhigh.to_i)
+    block -= 20
+  end
+
+  # parse voting info
+  begin
+    t = Timeout.timeout(5) do
+      @votes = JSON.parse(open("http://www.mmcvotes.com/block/#{block}?output=json").read)
+    end
+  rescue Timeout::Error
+    @votes = nil
+  end
+end # end mmc_voteinfo
 
 # calculates solo mining time based on hashrate
 def mmc_solotime(rate=0)
@@ -158,18 +181,18 @@ end
 # displays plugin help commands
 plugin.handle(/^help$/i) do |data|
   if @mmc_rooms.include?(data[:room].name)
-    next data[:room].say "Memorycoin Statistics: .mmc .diff .solo .ticker .conv .info"
+    next data[:room].say "Memorycoin Statistics: .mmc .diff .solo .ticker .conv .vote .info"
   end
 end
 
 # displays memorycoin network block statistics
 plugin.handle(/^mmc$/i) do |data|
-  if @mmc_rooms.include?(data[:room].name)
+  #if @mmc_rooms.include?(data[:room].name)
     mmc_blockinfo
     @reward = @reward.round(3)
     @minted = @minted.round(3)
     next data[:room].say "Memorycoin Network Block: #{@blckhigh.to_i}, Difficulty: #{@blckdiff.gsub(/\n/,'')}, Reward: #{@reward}, Minted: #{@minted}."
-  end
+  #end
 end
 
 # displays memorycoin network difficulty statistics
@@ -222,7 +245,7 @@ end
 plugin.handle(/^solo$/i) do |data, args|
   if @mmc_rooms.include?(data[:room].name)
     if args.empty?
-      next data[:room].say "Usage: .solo <H/min>."
+      next data[:room].say "Shows expected time to find a block mining solo. Usage: .solo <H/min>."
     else
       rate = args.first.to_f
       mmc_solotime(rate)
@@ -322,17 +345,46 @@ plugin.handle(/^conv$/i) do |data, args|
           eur_usd = @eur_usd["ticker"]["last"].to_f
           btc_usd = @btc_usd["last"].to_f
           if args.empty?
-            next data[:room].say "Usage: .conv <mmc>."
+            next data[:room].say "Converts any MMC amount in other currencies. Usage: .conv <mmc>."
           else
             mmc = args[0].to_f
             mmc_usd = (mmc * mmc_btc * btc_usd).round(2)
             mmc_ltc = ((mmc * mmc_btc) / ltc_btc).round(5)
             mmc_pts = ((mmc * mmc_btc) / pts_btc).round(5)
             mmc_eur = ((mmc * mmc_btc * btc_usd) / eur_usd).round(2)
+            mmc_btc = mmc * mmc_btc
             mmc_btc = mmc_btc.round(5)
             mmc = mmc.round(5)
             next data[:room].say "Converter: #{mmc} MMC = #{mmc_usd} USD = #{mmc_eur} EUR = #{mmc_btc} BTC = #{mmc_ltc} LTC = #{mmc_pts} PTS. Source: Bter (MMC/BTC, PTS/BTC), BTC-e (LTC/BTC, EUR/USD), Bitstamp (BTC/USD)."
           end
+        end
+      end
+    end
+  end
+end
+
+# displays elected candidates
+plugin.handle(/^vote$/i) do |data, args|
+  if @mmc_rooms.include?(data[:room].name)
+    mmc_voteinfo
+    if args.empty?
+      next data[:room].say "Shows elected candidates. Usage: .vote <ceo|cto|cno|cmo|cso|cha>."
+    else
+      if @votes.nil?
+        next data[:room].say "Data source currently down. This can be fixed by adding votes information to memorycoin deamon."
+      else
+        success = false
+        voted = @votes['block']['log'].split("\n")
+        voted.each do |line|
+          if line.start_with?('Candidate Elected: MVTE')
+            if line.include?(args[0]) and not success
+              success = true
+              next data[:room].say line
+            end
+          end
+        end
+        if not success
+          next data[:room].say "Shows elected candidates. Usage: .vote <ceo|cto|cno|cmo|cso|cha>."
         end
       end
     end
